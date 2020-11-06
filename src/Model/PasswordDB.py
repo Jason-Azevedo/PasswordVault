@@ -22,7 +22,7 @@ class PasswordDB:
         if self.cursor.execute(user_exists_query).fetchone() == None:
             self.cursor.execute(create_user_query, ['user', 'pass'])
 
-            print('Account setup \nname: user\npassword: pass\n')
+            print('Account setup: \nname: user\npassword: pass\n')
 
         self.conn.commit()
 
