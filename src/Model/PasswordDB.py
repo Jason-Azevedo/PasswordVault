@@ -12,6 +12,10 @@ class PasswordDB:
         query = 'SELECT * FROM Passwords'
         return self.cursor.execute(query).fetchall()
 
+    def get(self, name):
+        query = 'SELECT * FROM Passwords WHERE passFor = ?'
+        return self.cursor.execute(query, [name]).fetchone()
+
     def setup_db(self):
         create_table_query = '''CREATE TABLE IF NOT EXISTS Passwords (
                     passFor text, 

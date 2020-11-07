@@ -15,6 +15,8 @@ class Interpreter:
             self.clear_screen()
         elif 'show-all' in cmd or '--show-all' in cmd:
             self.show_all()
+        elif 'show' in cmd or '--show' in cmd:
+            self.show(cmd.split(' ')[1])
 
         else:
             print('\'' + cmd + '\'', 'Command not found')
@@ -31,6 +33,7 @@ class Interpreter:
         self.print_table_value('show <name>', 'Shows the password for that entry')
         self.print_table_value('edit <name>', 'Edit an existing password entry')
         self.print_table_value('del <name>', 'Removes a password entry')
+        print('\n')
 
     def clear_screen(self):
         if os.name == 'nt':
@@ -40,15 +43,24 @@ class Interpreter:
 
     def show_all(self):
         passEntries = self.db.get_all()
-        
+
         self.print_table_value('Entry', 'Password')
         print('----------------------------------')
 
         for entry in passEntries:
             self.print_table_value(entry[0], entry[1])
+        
+        print('\n')
 
     def show(self, name):
-        pass
+        entry = self.db.get(name)
+        name = entry[0]
+        password = entry[1]
+
+        self.print_table_value('Entry', 'Password')
+        print('----------------------------------')
+        self.print_table_value(name, password)
+        print('\n')
 
     def new(self, name, password):
         pass
