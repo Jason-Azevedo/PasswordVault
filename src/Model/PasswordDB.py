@@ -1,11 +1,16 @@
 import sqlite3
 
+
 class PasswordDB:
     # conn: sqlite database connection
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
         self.cursor = conn.cursor()
         self.setup_db()
+
+    def get_all(self):
+        query = 'SELECT * FROM Passwords'
+        return self.cursor.execute(query).fetchall()
 
     def setup_db(self):
         create_table_query = '''CREATE TABLE IF NOT EXISTS Passwords (
@@ -29,4 +34,3 @@ class PasswordDB:
     def close(self):
         self.cursor.close()
         self.conn.close()
-        

@@ -11,6 +11,7 @@ dbPath = path.join(
 db_conn = sqlite3.connect(dbPath)
 passwordDB = PasswordDB(db_conn)
 
+
 def Auth():
     # Get the correct pass from passwordDB
     correct_pass = 'pass'
@@ -27,7 +28,7 @@ def Auth():
 
 
 if __name__ == "__main__":
-    interpreter = Interpreter()
+    interpreter = Interpreter(passwordDB)
 
     # Login
     if Auth():
@@ -38,7 +39,7 @@ if __name__ == "__main__":
             for i in range(3, len(sys.argv)):
                 cmd += sys.argv[i] + ' '
 
-            interpreter.execCommand(cmd) 
+            interpreter.execCommand(cmd)
 
         else:
             interpreter.Interpret()
