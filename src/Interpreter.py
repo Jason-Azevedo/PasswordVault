@@ -22,22 +22,15 @@ class Interpreter:
     def print_commands(self):
         print('List of available commands:')
         print('---------------------------')
-        print('{:<25} {:<20}'.format('exit/quit', 'Closes the program'))
-        print('{:<25} {:<20}'.format('help', 'List all available commands'))
-        print('{:<25} {:<20}'.format('cls/clear', 'Clears the screen'))
-        print('{:<25} {:<20}'.format('show-all', 'Shows all passwords'))
-        print('{:<25} {:<20}'.format('show <name>',
-                                     'Shows the password for that entry'))
-        print('{:<25} {:<20}'.format('new <name> <pass>',
-                                     'Creates a new password entry'))
-        print('{:<25} {:<20}'.format('show <name>',
-                                     'Shows the password for that entry'))
-        # This command will ask for the new passfor and password
-        # If passfor is empty it will not be updated, but the pass will
-        print('{:<25} {:<20}'.format('edit <name>',
-                                     'Edit an existing password entry'))
-        print('{:<25} {:<20}'.format('del <name>',
-                                     'Removes a password entry'))
+        self.print_table_value('exit/quit', 'Closes the program')
+        self.print_table_value('help', 'List all available commands')
+        self.print_table_value('cls/clear', 'Clears the screen')
+        self.print_table_value('show-all', 'Shows all passwords')
+        self.print_table_value('show <name>', 'Shows the password for that entry')
+        self.print_table_value('new <name> <pass>', 'Creates a new password entry')
+        self.print_table_value('show <name>', 'Shows the password for that entry')
+        self.print_table_value('edit <name>', 'Edit an existing password entry')
+        self.print_table_value('del <name>', 'Removes a password entry')
 
     def clear_screen(self):
         if os.name == 'nt':
@@ -47,10 +40,12 @@ class Interpreter:
 
     def show_all(self):
         passEntries = self.db.get_all()
-        print('{:<25} {:<20}'.format('Entry', 'Password'))
+        
+        self.print_table_value('Entry', 'Password')
+        print('----------------------------------')
 
         for entry in passEntries:
-            print('{:<25} {:<20}'.format(entry[0], entry[1]))
+            self.print_table_value(entry[0], entry[1])
 
     def show(self, name):
         pass
@@ -63,6 +58,9 @@ class Interpreter:
 
     def delete(self, name):
         pass
+
+    def print_table_value(self, x, y):
+        print('{:<25} {:<20}'.format(x, y))
 
     def Interpret(self):
         print('Enter command below, help to list all commands, exit/quit to close program')
