@@ -17,6 +17,22 @@ class Interpreter:
             self.show_all()
         elif 'show' in cmd or '--show' in cmd:
             self.show(cmd.split(' ')[1])
+        elif 'new' in cmd or '--new' in cmd:
+            try:
+                name = cmd.split(' ')[1]
+                password = cmd.split(' ')[2]
+            except IndexError:
+                print('Please enter values, use help command for more info')
+                return
+
+            if name == '' or password == '':
+                print('Please enter proper values')
+                return
+
+            if self.new(name, password):
+                print('New entry created')
+            else:
+                print('Entry already exists')
 
         else:
             print('\'' + cmd + '\'', 'Command not found')
@@ -50,7 +66,7 @@ class Interpreter:
         for entry in passEntries:
             self.print_table_value(entry[0], entry[1])
         
-        print('\n')
+        print('')
 
     def show(self, name):
         entry = self.db.get(name)
@@ -60,10 +76,10 @@ class Interpreter:
         self.print_table_value('Entry', 'Password')
         print('----------------------------------')
         self.print_table_value(name, password)
-        print('\n')
+        print('')
 
     def new(self, name, password):
-        pass
+        self.db.new(name, password)
 
     def edit(self, name):
         pass

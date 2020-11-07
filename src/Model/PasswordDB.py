@@ -16,6 +16,17 @@ class PasswordDB:
         query = 'SELECT * FROM Passwords WHERE passFor = ?'
         return self.cursor.execute(query, [name]).fetchone()
 
+    def new(self, name, password):
+        entry_exist_query = 'SELECT * FROM Passwords WHERE passFor = ?'
+        query = 'INSERT INTO Passwords (passFor, password) VALUES (?, ?)'
+
+        if len(self.cursor.execute(entry_exist_query, [name]).fetchall()) >= 1:
+            return False
+
+        self.cursor.execute(query, [name, password])
+        self.conn.commit()
+        return True
+
     def setup_db(self):
         create_table_query = '''CREATE TABLE IF NOT EXISTS Passwords (
                     passFor text, 
