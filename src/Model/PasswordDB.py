@@ -27,6 +27,15 @@ class PasswordDB:
         self.conn.commit()
         return True
 
+    def edit(self, name, new_name, new_pass):
+        query = '''UPDATE Passwords SET 
+                    passFor = ?,
+                    password = ?
+                    WHERE passFor = ?'''
+
+        self.cursor.execute(query, [new_name, new_pass, name])
+        self.conn.commit()
+
     def setup_db(self):
         create_table_query = '''CREATE TABLE IF NOT EXISTS Passwords (
                     passFor text, 

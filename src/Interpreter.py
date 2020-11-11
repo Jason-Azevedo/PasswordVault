@@ -32,7 +32,9 @@ class Interpreter:
             if self.new(name, password):
                 print('New entry created')
             else:
-                print('Entry already exists')
+                print('Unable to create entry...\n')
+        elif 'edit' in cmd or '--edit' in cmd:
+            self.edit(cmd.split(' ')[1])
 
         else:
             print('\'' + cmd + '\'', 'Command not found')
@@ -44,12 +46,16 @@ class Interpreter:
         self.print_table_value('help', 'List all available commands')
         self.print_table_value('cls/clear', 'Clears the screen')
         self.print_table_value('show-all', 'Shows all passwords')
-        self.print_table_value('show <name>', 'Shows the password for that entry')
-        self.print_table_value('new <name> <pass>', 'Creates a new password entry')
-        self.print_table_value('show <name>', 'Shows the password for that entry')
-        self.print_table_value('edit <name>', 'Edit an existing password entry')
+        self.print_table_value(
+            'show <name>', 'Shows the password for that entry')
+        self.print_table_value('new <name> <pass>',
+                               'Creates a new password entry')
+        self.print_table_value(
+            'show <name>', 'Shows the password for that entry')
+        self.print_table_value(
+            'edit <name>', 'Edit an existing password entry')
         self.print_table_value('del <name>', 'Removes a password entry')
-        print('\n')
+        print('')
 
     def clear_screen(self):
         if os.name == 'nt':
@@ -65,7 +71,7 @@ class Interpreter:
 
         for entry in passEntries:
             self.print_table_value(entry[0], entry[1])
-        
+
         print('')
 
     def show(self, name):
@@ -79,9 +85,38 @@ class Interpreter:
         print('')
 
     def new(self, name, password):
+        if name == 'user':
+            print('Sorry, user is a reserved name!')
+            return False
+
         self.db.new(name, password)
+        return True
 
     def edit(self, name):
+        if self.db.get(name) == None:
+            print('Unable to edit:', name + '.', 'It does not exist')
+            return
+
+        # Prevents error when the user changes the user account password
+        new_name = ''
+
+        if name != 'user':
+            print('Press enter to skip name edit')
+            new_name = input('new name: ')
+
+        new_pass = input('new pass: ')
+
+        if len(new_name) == 0:
+            new_name = name
+
+        if len(new_pass) == 0 and len(new_name) == 0:
+            print('Unable to edit:', name + '.', 'No values updated')
+        elif len(new_pass) == 0:
+            print('Error: Please enter a value for the password!')
+            return
+
+        # Commit the updated entry
+        self.db.edit(name, new_name, new_pass)
         pass
 
     def delete(self, name):
