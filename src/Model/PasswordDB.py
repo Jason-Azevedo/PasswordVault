@@ -36,6 +36,12 @@ class PasswordDB:
         self.cursor.execute(query, [new_name, new_pass, name])
         self.conn.commit()
 
+    def delete(self, name):
+        query = 'DELETE FROM Passwords WHERE passFor = ?'
+
+        self.cursor.execute(query, [name])
+        self.conn.commit()
+
     def setup_db(self):
         create_table_query = '''CREATE TABLE IF NOT EXISTS Passwords (
                     passFor text, 

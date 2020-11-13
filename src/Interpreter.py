@@ -35,6 +35,8 @@ class Interpreter:
                 print('Unable to create entry...\n')
         elif 'edit' in cmd or '--edit' in cmd:
             self.edit(cmd.split(' ')[1])
+        elif 'delete' in cmd or '--delete' in cmd:
+            self.delete(cmd.split(' ')[1])
 
         else:
             print('\'' + cmd + '\'', 'Command not found')
@@ -50,8 +52,6 @@ class Interpreter:
             'show <name>', 'Shows the password for that entry')
         self.print_table_value('new <name> <pass>',
                                'Creates a new password entry')
-        self.print_table_value(
-            'show <name>', 'Shows the password for that entry')
         self.print_table_value(
             'edit <name>', 'Edit an existing password entry')
         self.print_table_value('del <name>', 'Removes a password entry')
@@ -117,10 +117,14 @@ class Interpreter:
 
         # Commit the updated entry
         self.db.edit(name, new_name, new_pass)
-        pass
 
     def delete(self, name):
-        pass
+        if self.db.get(name) == None:
+            print('Unable to delete:', name + '.', 'It does not exist')
+            return
+
+        self.db.delete(name)
+        print('Successfully deleted:', name)
 
     def print_table_value(self, x, y):
         print('{:<25} {:<20}'.format(x, y))
