@@ -14,7 +14,7 @@ passwordDB = PasswordDB(db_conn)
 
 def Auth():
     # Get the correct pass from passwordDB
-    correct_pass = 'pass'
+    correct_pass = passwordDB.get('user')[1]
 
     if '-p' in sys.argv:
         password = sys.argv[2]
